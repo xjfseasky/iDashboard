@@ -17,7 +17,7 @@
   </div>
   @permission(config('admin.permissions.shop.create'))
   <div class="col-lg-4">
-    <div class="title-action">
+    <div class="title-action"><span style="display:none;" id="get_loading"><img width="20" height="20" src="/admin/img/loading156.gif" />正在同步ing...</span>
       <a href="javascript:;" id="yzupdate" data="{{url('admin/shop/yzshopget')}}" class="btn btn-info">{!!trans('admin/shop.action.yzupdate')!!}</a>
     </div>
     <!--
@@ -104,7 +104,7 @@
 <script src="{{asset('vendors/layer/layer.js')}}"></script>
 <script>
 $("#yzupdate").click(function(){
-
+    $("#get_loading").show();
     $.ajax({
         type:'get',
         url:"{{url('admin/shop/yzshopget')}}",
@@ -114,8 +114,11 @@ $("#yzupdate").click(function(){
             if(msg['result']=='1') {
                 alert(msg['succ']);
                 //window.location.reload();
-            }else
+            }else{
                 alert(msg['err']);
+            }
+
+            $("#get_loading").hide();
         },
         error:function(xhr , t , e) {
             $(that).attr('disabled',false);
