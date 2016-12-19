@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	 return Redirect::to('/admin/dash');
 });
 
 Auth::routes();
@@ -31,6 +31,29 @@ Route::group(['prefix' => 'admin','namespace' => 'Admin','middleware' => ['auth'
 	require(__DIR__ . '/admin/user.php');
 	// 菜单
 	require(__DIR__ . '/admin/menu.php');
+	//网点管理
+	$router->any('/shop/list', 'ShopsController@index')->name('shop.list');
+	$router->any('/shop/ajaxIndex', 'ShopsController@ajaxIndex')->name('shop.lists');
+	$router->any('/shop/yzshopget', 'ShopsController@yzshopget')->name('shop.yzshopget');
+	$router->any('/shop/shopsku/{shop_id}', 'ShopsController@shopsku')->name('shop.shopsku');
+	// 商品sku
+	$router->any('/shop/yzshopskuget/{shop_id}', 'ShopsController@yzshopskuget')->name('shop.yzshopskuget');
+	// 商品配送方式
+	$router->any('/shop/yzpeisongget/{shop_id}', 'ShopsController@yzpeisongget')->name('shop.yzpeisongget');
+
+
+	//商品管理
+	$router->any('/goods/list', 'GoodsController@index')->name('goods.list');
+	$router->any('/goods/ajaxIndex', 'goods@ajaxIndex')->name('goods.lists');
+	// 商品同步
+	$router->any('/goods/yzgoodsget', 'GoodsController@yzgoodsget')->name('goods.yzgoodsget');
+	//商品sku管理
+
+	// 订单列表
+	$router->any('/order/list', 'OrderController@index')->name('order.list');
+	// 订单列表
+	// $router->any('/order/list', 'OrderController@index')->name('order.list');
+
 
 });
 

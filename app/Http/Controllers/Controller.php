@@ -10,4 +10,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+	public $appId = '9f5adec84f0b10343f';
+	public $appSecret = '077cf52789721dbe8e474c5e76fb683d';
 }

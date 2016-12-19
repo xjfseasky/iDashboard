@@ -1,25 +1,21 @@
 <?php
 namespace App\Service\Admin;
-use App\Repositories\Eloquent\UserRepositoryEloquent;
-use App\Repositories\Eloquent\RoleRepositoryEloquent;
-use App\Repositories\Eloquent\PermissionRepositoryEloquent;
+use App\Repositories\Eloquent\ShopsRepositoryEloquent;
 use App\Service\Admin\BaseService;
 use Exception;
 /**
 * 角色service
 */
-class UserService extends BaseService
+class ShopService extends BaseService
 {
 
 	private $user;
 	private $role;
 	private $permission;
 
-	function __construct(UserRepositoryEloquent $user,RoleRepositoryEloquent $role,PermissionRepositoryEloquent $permission)
+	function __construct(ShopsRepositoryEloquent $shops)
 	{
-		$this->user =  $user;
-		$this->role =  $role;
-		$this->permission =  $permission;
+		$this->shops =  $shops;
 	}
 	/**
 	 * datatables获取数据
@@ -43,21 +39,22 @@ class UserService extends BaseService
 		$order['name'] = request('columns.' .request('order.0.column',0) . '.name');
 		$order['dir'] = request('order.0.dir','asc');
 
-		$result = $this->user->getUserList($start,$length,$search,$order);
-		$users = [];
+		$result = $this->shops->getShopsList($start,$length,$search,$order);
+		$shops = [];
 
-		if ($result['users']) {
-			foreach ($result['users'] as $v) {
+		if ($result['shops_arr']) {
+			foreach ($result['shops_arr'] as $v) {
 				$v->actionButton = $v->getActionButtonAttribute();
-				$users[] = $v;
+				$v->shoplv_name = $v->shoplv==0?'总店':'分店';
+				$v->address_shop = $v->province . $v->city . $v->area . $v->address;
+				$shops[] = $v;
 			}
 		}
-
 		return [
 			'draw' => $draw,
 			'recordsTotal' => $result['count'],
 			'recordsFiltered' => $result['count'],
-			'data' => $users,
+			'data' => $shops,
 		];
 	}
 	/**

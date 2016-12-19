@@ -25,4 +25,22 @@ return [
 		'list' 		=> '<i class="fa fa-diamond"></i> 系统日志列表',
 		'detail' 	=> '<i class="fa fa-diamond"></i> 系统日志信息',
 	],
+	'shop' => [
+		'list' 		=> '<i class="fa fa-diamond"></i> 网点列表',
+		'create' 	=> '<i class="fa fa-plus"></i> 添加网点',
+		'edit' 		=> '<i class="fa fa-pencil"></i> 修改网点',
+		'info' 		=> '<i class="fa fa-pencil"></i> 网点信息',
+	],
+	'shopsku' => [
+		'list' 		=> '<i class="fa fa-diamond"></i> 店铺商品列表',
+		'create' 	=> '<i class="fa fa-plus"></i> 添加商品',
+		'edit' 		=> '<i class="fa fa-pencil"></i> 修改商品',
+		'info' 		=> '<i class="fa fa-pencil"></i> 商品信息',
+	],
+	'goods' => [
+		'list' 		=> '<i class="fa fa-diamond"></i> 商品列表',
+		'create' 	=> '<i class="fa fa-plus"></i> 添加商品',
+		'edit' 		=> '<i class="fa fa-pencil"></i> 修改商品',
+		'info' 		=> '<i class="fa fa-pencil"></i> 商品信息',
+	],
 ];

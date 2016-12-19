@@ -39,5 +39,17 @@ return [
 	],
 	'system' => [
 		'list' => 'system.index'
+	],
+	'shop' => [
+		'list' 		=> 'shop.list',
+		'create' 	=> 'shop.create',
+		'edit' 		=> 'shop.edit',
+
+	],
+	'goods' => [
+		'list' 		=> 'goods.list',
+		'create' 	=> 'goods.create',
+		'edit' 		=> 'goods.edit',
+
 	]
 ];
