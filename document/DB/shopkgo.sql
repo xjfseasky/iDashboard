@@ -87,62 +87,62 @@ create table orders(
 	id bigint not null auto_increment primary key,
 	name varchar(50) not null COMMENT "店铺名称",
 	consign_time datetime  COMMENT "卖家发货时间",
-	buyer_area
-	num
-	adjust_fee
-	relation_type
-	type
-	yzbuyer_id
-	yztid
-	feedback
-	outer_user_id
-	price
-	total_fee
-	payment
-	weixin_user_id
-	sub_trades
-	delivery_time_display
-	buyer_message
-	created
-	pay_time
-	shop_id
-	out_trade_no
-	points_price
-	tuan_no
-	orders
-	promotion_details
-	refund_state
-	status
-	post_fee
-	pic_thumb_path
-	receiver_city
-	shipping_type
-	refunded_fee
-	yznum_iid
-	title
-	discount_fee
-	hotel_info
-	receiver_state
-	update_time
-	coupon_details
-	receiver_zip
-	receiver_name
-	pay_type
-	profit
-	fans_info
-	fetch_detail
-	buyer_type
-	receiver_district
-	pic_path
-	receiver_mobile
-	sign_time
-	seller_flag
-	buyer_nick
-	handled
-	receiver_address
-	trade_memo
-	relations
-	outer_tid
+	buyer_area  varchar(50) not null COMMENT "买家下单的地区",
+	num varchar(50) not null COMMENT "商品购买数量",
+	adjust_fee varchar(50) not null COMMENT "json:订单改价, 总改价金额, 邮费改价",
+	relation_type varchar(50) not null COMMENT "分销/采购单",
+	type varchar(50) not null COMMENT "交易类型",
+	yzbuyer_id varchar(50) not null COMMENT "有赞买家ID",
+	yztid varchar(50) not null COMMENT "有赞交易编号",
+	feedback varchar(50) not null COMMENT "交易维权状态",
+	outer_user_id varchar(50) not null COMMENT "三方APP用户id",
+	price varchar(50) not null COMMENT "商品价格",
+	total_fee varchar(50) not null COMMENT "商品总价",
+	payment varchar(50) not null COMMENT "实付金额",
+	weixin_user_id varchar(50) not null COMMENT "微信粉丝ID",
+	sub_trades varchar(50) not null COMMENT "交易中包含的子交易",
+	delivery_time_display varchar(50) not null COMMENT "同城送订单送达时间",
+	buyer_message varchar(50) not null COMMENT "买家购买附言",
+	created varchar(50) not null COMMENT "交易创建时间",
+	pay_time varchar(50) not null COMMENT "买家付款时间",
+	shop_id varchar(50) not null COMMENT "多门店订单的门店id 非多门店订单则默认为0",
+	out_trade_no varchar(50) not null COMMENT "代付订单外部交易号列表,非代付订单类型返回空",
+	points_price varchar(50) not null COMMENT "积分兑换订单，数值代表消耗的积分 非积分兑换订单默认为0",
+	tuan_no varchar(50) not null COMMENT "拼团订单对应的团编号",
+	orders varchar(50) not null COMMENT "交易明细列表",
+	promotion_details varchar(50) not null COMMENT "在交易中使用到优惠活动详情，包括：满减满送",
+	refund_state varchar(50) not null COMMENT "退款状态NO_REFUND（无退款）PARTIAL_REFUNDING（部分退款中）PARTIAL_REFUNDED（已部分退款）PARTIAL_REFUND_FAILED（部分退款失败）FULL_REFUNDING（全额退款中）FULL_REFUNDED（已全额退款）FULL_REFUND_FAILED（全额退款失败",
+	status varchar(50) not null COMMENT "交易状态",
+	post_fee varchar(50) not null COMMENT "运费",
+	pic_thumb_path varchar(50) not null COMMENT "商品主图片缩略图地址",
+	receiver_city varchar(50) not null COMMENT "收货人的所在城市",
+	shipping_type varchar(50) not null COMMENT "创建交易时的物流方式",
+	refunded_fee varchar(50) not null COMMENT "交易完成后退款的金额",
+	yznum_iid varchar(50) not null COMMENT "有赞商品数字编号",
+	title varchar(50) not null COMMENT "店铺名称",
+	discount_fee varchar(50) not null COMMENT "店铺名称",
+	hotel_info varchar(50) not null COMMENT "店铺名称",
+	receiver_state varchar(50) not null COMMENT "店铺名称",
+	update_time varchar(50) not null COMMENT "店铺名称",
+	coupon_details varchar(50) not null COMMENT "店铺名称",
+	receiver_zip varchar(50) not null COMMENT "店铺名称",
+	receiver_name varchar(50) not null COMMENT "店铺名称",
+	pay_type varchar(50) not null COMMENT "店铺名称",
+	profit varchar(50) not null COMMENT "店铺名称",
+	fans_info varchar(50) not null COMMENT "店铺名称",
+	fetch_detail varchar(50) not null COMMENT "店铺名称",
+	buyer_type varchar(50) not null COMMENT "店铺名称",
+	receiver_district varchar(50) not null COMMENT "店铺名称",
+	pic_path varchar(50) not null COMMENT "店铺名称",
+	receiver_mobile varchar(50) not null COMMENT "店铺名称",
+	sign_time varchar(50) not null COMMENT "店铺名称",
+	seller_flag varchar(50) not null COMMENT "店铺名称",
+	buyer_nick varchar(50) not null COMMENT "店铺名称",
+	handled varchar(50) not null COMMENT "店铺名称",
+	receiver_address varchar(50) not null COMMENT "店铺名称",
+	trade_memo varchar(50) not null COMMENT "店铺名称",
+	relations varchar(50) not null COMMENT "店铺名称",
+	outer_tid varchar(50) not null COMMENT "店铺名称",
 )engine=innodb DEFAULT charset=utf8;
 
 #商品管理

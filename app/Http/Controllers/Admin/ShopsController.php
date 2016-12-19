@@ -63,7 +63,7 @@ class ShopsController extends Controller
                                             'num', 'price', 'created_at')
                                         ->where('name', 'LIKE', '%' . $search . '%')
                                         ->where('shop_id', $shop_id)
-                                        ->where('shop_id', 1)
+                                        ->where('is_listing', 1)
                                         ->orderby('created_at', 'DESC')
                                         ->paginate($this->paginate);
         }else {
@@ -142,9 +142,11 @@ class ShopsController extends Controller
 		$method = 'kdt.multistore.offline.goods.sku.get';
 		$params = array();
 		// 店铺列表
-		$params['shop_id'] = $shop_id;
+
 		// 有赞店铺id
 		$youzan_id = $shops['youzan_id'];
+		$params['shop_id'] = $youzan_id;
+		$params['offline_id'] = $shop_id;
 		$n = 0;
 		// 商品列表
 		foreach ($goods as $kys => $val) 
@@ -155,6 +157,7 @@ class ShopsController extends Controller
 			$data = $client->get($method, $params);
 			// 店铺商品sku
 			$list = $data['response']['item'];
+			$shopsku = '';
 			if($list)
 			{
 				$shopsku = new Shopsku;
@@ -176,12 +179,14 @@ class ShopsController extends Controller
 				$shopsku['num'] = $list['num'];
 				
 				$shopsku['price'] = $list['price'];
-				$data = Shopsku::where(["youzan_id"=>$youzan_id, "yz_num_iid"=>$yznum_iid])->get();
+				$data = Shopsku::where(["youzan_id"=>$youzan_id, "yz_num_iid"=>$yznum_iid])->first();
 				// echo "\r\n shop: " . $shops['name'] . "name: " . $shopsku['name'] . " num: " . $shopsku['num'] . "\r\n";
 				if(count($data)>0)
 				{
-					$shopsku['id'] = $data[0]['id'];
-					$shopsku->update();
+					$tmp = $shopsku['attributes'];
+					//$shopsku->update();
+					$status = Shopsku::where("id", $data['id'])->update($tmp);
+					// dump($status);
 				}
 				else
 				{
@@ -240,105 +245,108 @@ class ShopsController extends Controller
     }
 
     // 获取网点所有商品配送方式设置
- //    public function yzpeisongget()
- //    {
+    public function yzpeisonggetall()
+    {
 
-	// 	$client = new KdtApiClient($this->appId, $this->appSecret);
-	// 	$shops_ps = Shops::select("id", "youzan_id", "name")->where("status", 1)->get();
-	// 	//查看网点列表
-	// 	$method = 'kdt.multistore.offline.goods.settings.get';
-	// 	$params = array();
-	// 	// 更新所有商品状态：所有为未上架
-	// 	Shopsku::where("is_listing", 1)->update(array("is_listing"=>2));
+		$client = new KdtApiClient($this->appId, $this->appSecret);
+		$shops_ps = Shops::select("id", "youzan_id", "name")->where("status", 1)->get();
+		//查看网点列表
+		$method = 'kdt.multistore.offline.goods.settings.get';
+		$params = array();
+		// 更新所有商品状态：所有为未上架
+		Shopsku::where("is_listing", 1)->update(array("is_listing"=>2));
 		
-	// 	if($shops_ps)
-	// 	{
-	// 		foreach($shops_ps as $key=>$v)
-	// 		{
-	// 			// echo "<br> ----name: " . $v['name'] . "youzan_id: " .$v['youzan_id']. "<br>";
-	// 			$params['shop_id'] = $v['youzan_id'];
-	// 			//$params['shop_id'] = 20943074;
-	// 			$data = $client->get($method, $params);
-	// 			if($data)
-	// 			{
-	// 				foreach($data['response'] as $key=>$v)
-	// 				{
-	// 					// 如果商品不存在网点里设置为未上架
-	// 					$shopsku = new Shopsku;
-	// 					$sku = Shopsku::where(array("youzan_id"=>$v['shop_id'], "yz_num_iid"=>$v['goods_id']))->first();
-	// 					if($sku)
-	// 					{
-	// 						$sku['is_listing'] = 1;
-	// 						$sku->update();
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
- //    }
- //    // 获取sku列表
- //    public function yzshopskuget()
- //    {
- //    	//更新商品列表
-	// 	$client = new KdtApiClient($this->appId, $this->appSecret);
-	// 	$shops = Shops::select("id", "youzan_id", "name")->where("status", 1)->get();
-	// 	$goods = Goods::select("id", "yznum_iid")->where("status", 1)->get();
-	// 	//查看网点列表
-	// 	$method = 'kdt.multistore.offline.goods.sku.get';
-	// 	$params = array();
-	// 	// 店铺列表
-	// 	foreach($shops as $key=>$v)
-	// 	{
-	// 		$params['shop_id'] = $v['youzan_id'];
-	// 		// echo "<br> ----name : ". $v['name'] . "<br>";
-	// 		$shop_id = $v['id'];
-	// 		$youzan_id = $v['youzan_id'];
-	// 		$n = 0;
-	// 		// 商品列表
-	// 		foreach ($goods as $kys => $val) 
-	// 		{
-	// 			// echo "<br> yznum_iid : ". $val['yznum_iid'] . "<br>";
-	// 			$goods_id = $val['id'];
-	// 			$yznum_iid = $val['yznum_iid'];
-	// 			$params['num_iid'] = $val['yznum_iid'];
-	// 			$data = $client->get($method, $params);
-	// 			// 店铺商品sku
-	// 			$list = $data['response']['item'];
-	// 			if($list)
-	// 			{
-	// 				$shopsku = new Shopsku;
-	// 				$shopsku['shop_id'] = $shop_id; 
-	// 				$shopsku['youzan_id'] = $youzan_id;
-	// 				$shopsku['goods_id'] = $goods_id;
-	// 				$shopsku['yz_num_iid'] = $yznum_iid;
-	// 				$skus_id = 0;
-	// 				if(isset($list['skus'][0]['sku_id']))
-	// 				{
-	// 					$skus_id = $list['skus'][0]['sku_id'];
-	// 				}
-	// 				$shopsku['yz_sku_id'] = $skus_id;
-	// 				//$shopsku['type'] = $v['is_store'];
+		if($shops_ps)
+		{
+			foreach($shops_ps as $key=>$v)
+			{
+				// echo "<br> ----name: " . $v['name'] . "youzan_id: " .$v['youzan_id']. "<br>";
+				$params['shop_id'] = $v['youzan_id'];
+				//$params['shop_id'] = 20943074;
+				$data = $client->get($method, $params);
+				if($data)
+				{
+					foreach($data['response'] as $key=>$v)
+					{
+						// 如果商品不存在网点里设置为未上架
+						$shopsku = new Shopsku;
+						$sku = Shopsku::where(array("youzan_id"=>$v['shop_id'], "yz_num_iid"=>$v['goods_id']))->first();
+						if($sku)
+						{
+							$sku['is_listing'] = 1;
+							$sku->update();
+						}
+					}
+				}
+			}
+		}
+    }
+    // 获取sku列表
+    public function yzshopskugetall()
+    {
+    	//更新商品列表
+		$client = new KdtApiClient($this->appId, $this->appSecret);
+		$shops = Shops::select("id", "youzan_id", "name")->where("status", 1)->get();
+		$goods = Goods::select("id", "yznum_iid")->where("status", 1)->get();
+		//查看网点列表
+		$method = 'kdt.multistore.offline.goods.sku.get';
+		$params = array();
+		// 店铺列表
+		foreach($shops as $key=>$v)
+		{
+			echo "<br> ----name : ". $v['name'] . "<br>";
+			$shop_id = $v['id'];
+			$youzan_id = $v['youzan_id'];
+			$params['shop_id'] = $youzan_id;
+			$n = 0;
+			// 商品列表
+			foreach ($goods as $kys => $val) 
+			{
+				echo "<br> yznum_iid : ". $val['yznum_iid'] . "<br>";
+				$goods_id = $val['id'];
+				$yznum_iid = $val['yznum_iid'];
+				$params['num_iid'] = $val['yznum_iid'];
+				$data = $client->get($method, $params);
+				// 店铺商品sku
+				$list = $data['response']['item'];
+				if($list)
+				{
+					$shopsku = new Shopsku;
+					$shopsku['shop_id'] = $shop_id; 
+					$shopsku['youzan_id'] = $youzan_id;
+					$shopsku['goods_id'] = $goods_id;
+					$shopsku['yz_num_iid'] = $yznum_iid;
+					$skus_id = 0;
+					if(isset($list['skus'][0]['sku_id']))
+					{
+						$skus_id = $list['skus'][0]['sku_id'];
+					}
+					$shopsku['yz_sku_id'] = $skus_id;
+					//$shopsku['type'] = $v['is_store'];
 
-	// 				$shopsku['name'] = $list['title'];
-	// 				//$shopsku['is_listing'] = $list['is_listing'];
-	// 				//$shopsku['outer_buy_url'] = $v['outer_buy_url'];
-	// 				$shopsku['num'] = $list['num'];
+					$shopsku['name'] = $list['title'];
+					//$shopsku['is_listing'] = $list['is_listing'];
+					//$shopsku['outer_buy_url'] = $v['outer_buy_url'];
+					$shopsku['num'] = $list['num'];
 					
-	// 				$shopsku['price'] = $list['price'];
-	// 				$data = Shopsku::where(["youzan_id"=>$params['shop_id'], "yz_num_iid"=>$goods_id])->get();
-	// 				if(count($data)>0)
-	// 				{
-	// 					$shopsku['id'] = $data[0]['id'];
-	// 					$shopsku->update();
-	// 				}
-	// 				else
-	// 				{
-	// 					$shopsku->save();
-	// 				}
-	// 			}
-	// 		}
-	// 		$this->yzpeisongget();
-	// 	}
-	// 	return response()->json(['result' => '1', 'succ' => '同步完成']);
-	// }
+					$shopsku['price'] = $list['price'];
+					$data = Shopsku::where(["youzan_id"=>$youzan_id, "yz_num_iid"=>$yznum_iid])->first();
+					// echo "\r\n shop: " . $shops['name'] . "name: " . $shopsku['name'] . " num: " . $shopsku['num'] . "\r\n";
+					if(count($data)>0)
+					{
+						$tmp = $shopsku['attributes'];
+						//$shopsku->update();
+						$status = Shopsku::where("id", $data['id'])->update($tmp);
+						// dump($status);
+					}
+					else
+					{
+						$shopsku->save();
+					}
+				}
+			}
+			$this->yzpeisonggetall();
+		}
+		return response()->json(['result' => '1', 'succ' => '同步完成']);
+	}
 }

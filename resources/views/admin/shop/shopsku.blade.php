@@ -43,7 +43,7 @@
                             <form class="form-inline" action="" method="post" role="form">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="page" value="1" />
-                                <input type="text" name="shop_name" value="{{$search}}" class="form-control" placeholder="店铺名称" />
+                                <input type="text" name="shopsku_name" value="{{$search}}" class="form-control" placeholder="店铺名称" />
                                 <button type="submit" class="btn btn-default" style='margin-left:10px;margin-right:20px;' id="search">搜索</button>
                             </form>
                         </div>

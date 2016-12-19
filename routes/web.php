@@ -42,6 +42,12 @@ Route::group(['prefix' => 'admin','namespace' => 'Admin','middleware' => ['auth'
 	$router->any('/shop/yzpeisongget/{shop_id}', 'ShopsController@yzpeisongget')->name('shop.yzpeisongget');
 
 
+	// 商品sku -all 
+	$router->any('/shop/yzshopskugetall', 'ShopsController@yzshopskugetall')->name('shop.yzshopskugetall');
+	// 商品配送方式 -all
+	$router->any('/shop/yzpeisonggetall', 'ShopsController@yzpeisonggetall')->name('shop.yzpeisonggetall');
+
+
 	//商品管理
 	$router->any('/goods/list', 'GoodsController@index')->name('goods.list');
 	$router->any('/goods/ajaxIndex', 'goods@ajaxIndex')->name('goods.lists');

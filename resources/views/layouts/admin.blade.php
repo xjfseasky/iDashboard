@@ -82,11 +82,8 @@
       </div>
       @yield('content')
       <div class="footer">
-          <div class="pull-right">
-              10GB of <strong>250GB</strong> Free.
-          </div>
           <div>
-              <strong>Copyright</strong> 晚黎后台 &copy; http://www.iwanli.me
+              <strong>Copyright</strong> 老虎快购 &copy; http://www.52kuaipao.com
           </div>
       </div>
 
